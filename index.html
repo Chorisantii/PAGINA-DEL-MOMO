@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+    <script type='text/javascript'>
+        // <![CDATA[
+        var colour="red";
+        var sparkles=40;
+        
+        var x=ox=400;
+        var y=oy=300;
+        var swide=800;
+        var shigh=600;
+        var sleft=sdown=0;
+        var tiny=new Array();
+        var star=new Array();
+        var starv=new Array();
+        var starx=new Array();
+        var stary=new Array();
+        var tinyx=new Array();
+        var tinyy=new Array();
+        var tinyv=new Array();
+        window.onload=function() { if (document.getElementById) {
+        var i, rats, rlef, rdow;
+        for (var i=0; i<sparkles; i++) {
+        var rats=createDiv(3, 3);
+        rats.style.visibility="hidden";
+        document.body.appendChild(tiny[i]=rats);
+        starv[i]=0;
+        tinyv[i]=0;
+        var rats=createDiv(5, 5);
+        rats.style.backgroundColor="transparent";
+        rats.style.visibility="hidden";
+        var rlef=createDiv(1, 5);
+        var rdow=createDiv(5, 1);
+        rats.appendChild(rlef);
+        rats.appendChild(rdow);
+        rlef.style.top="2px";
+        rlef.style.left="0px";
+        rdow.style.top="0px";
+        rdow.style.left="2px";
+        document.body.appendChild(star[i]=rats);
+        }
+        set_width();
+        sparkle();
+        }}
+        function sparkle() {
+        var c;
+        if (x!=ox || y!=oy) {
+        ox=x;
+        oy=y;
+        for (c=0; c<sparkles; c++) if (!starv[c]) {
+        star[c].style.left=(starx[c]=x)+"px";
+        star[c].style.top=(stary[c]=y)+"px";
+        star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+        star[c].style.visibility="visible";
+        starv[c]=50;
+        break;
+        }
+        }
+        for (c=0; c<sparkles; c++) {
+        if (starv[c]) update_star(c);
+        if (tinyv[c]) update_tiny(c);
+        }
+        setTimeout("sparkle()", 40);
+        }
+        function update_star(i) {
+        if (--starv[i]==25) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+        if (starv[i]) {
+        stary[i]+=1+Math.random()*3;
+        if (stary[i]<shigh+sdown) {
+        star[i].style.top=stary[i]+"px";
+        starx[i]+=(i%5-2)/5;
+        star[i].style.left=starx[i]+"px";
+        }
+        else {
+        star[i].style.visibility="hidden";
+        starv[i]=0;
+        return;
+        }
+        }
+        else {
+        tinyv[i]=50;
+        tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+        tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+        tiny[i].style.width="2px";
+        tiny[i].style.height="2px";
+        star[i].style.visibility="hidden";
+        tiny[i].style.visibility="visible"
+        }
+        }
+        function update_tiny(i) {
+        if (--tinyv[i]==25) {
+        tiny[i].style.width="1px";
+        tiny[i].style.height="1px";
+        }
+        if (tinyv[i]) {
+        tinyy[i]+=1+Math.random()*3;
+        if (tinyy[i]<shigh+sdown) {
+        tiny[i].style.top=tinyy[i]+"px";
+        tinyx[i]+=(i%5-2)/5;
+        tiny[i].style.left=tinyx[i]+"px";
+        }
+        else {
+        tiny[i].style.visibility="hidden";
+        tinyv[i]=0;
+        return;
+        }
+        }
+        else tiny[i].style.visibility="hidden";
+        }
+        document.onmousemove=mouse;
+        function mouse(e) {
+        set_scroll();
+        y=(e)?e.pageY:event.y+sdown;
+        x=(e)?e.pageX:event.x+sleft;
+        }
+        function set_scroll() {
+        if (typeof(self.pageYOffset)=="number") {
+        sdown=self.pageYOffset;
+        sleft=self.pageXOffset;
+        }
+        else if (document.body.scrollTop || document.body.scrollLeft) {
+        sdown=document.body.scrollTop;
+        sleft=document.body.scrollLeft;
+        }
+        else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+        sleft=document.documentElement.scrollLeft;
+        sdown=document.documentElement.scrollTop;
+        }
+        else {
+        sdown=0;
+        sleft=0;
+        }
+        }
+        window.onresize=set_width;
+        function set_width() {
+        if (typeof(self.innerWidth)=="number") {
+        swide=self.innerWidth;
+        shigh=self.innerHeight;
+        }
+        else if (document.documentElement && document.documentElement.clientWidth) {
+        swide=document.documentElement.clientWidth;
+        shigh=document.documentElement.clientHeight;
+        }
+        else if (document.body.clientWidth) {
+        swide=document.body.clientWidth;
+        shigh=document.body.clientHeight;
+        }
+        }
+        function createDiv(height, width) {
+        var div=document.createElement("div");
+        div.style.position="absolute";
+        div.style.height=height+"px";
+        div.style.width=width+"px";
+        div.style.overflow="hidden";
+        div.style.backgroundColor=colour;
+        return (div);
+        }
+        // ]]>
+        </script>
+        <script type="text/javascript" src="//acortar.org/gen-js"></script>
+
+        <script language='javascript' type='text/javascript'>
+            //Iván Nieto Pérez
+            
+            var incremento = 0
+            //limite de la expansion de las letras
+            var y = 200
+            var x = 300
+            //posicion del centro de referencia del dibujo que describen las letras
+            var X = 400
+            var Y = 200
+            
+            //velocidad de movimiento de las letras
+            var velocidad = 50
+            //mensaje que se mostrara y cuyas letras danzaran por la pantalla
+            //maximo 25 letras (de lo contrario, se sobrepasa el rango de colores valido)
+            var mensaje = "★★★★★★★★★★★★★★★★★★★★"
+            var numeroLetras = mensaje.length
+            
+            function mueveLetras() {
+            for ( j = 0 ; j < numeroLetras ; j++ ) {
+            
+            if (document.layers) {
+            letra = eval( "document.capa" + j )
+            letra.top = (Y + Math.cos((20 * Math.sin(incremento/20)) + j * 70) * y * (Math.sin(10+incremento/10) + 0.2) * Math.cos((incremento + j * 25)/10))
+            letra.left = (X + Math.sin((20*Math.sin(incremento/20)) + j * 70) * x * (Math.sin(10+incremento/10) + 0.2) * Math.cos((incremento + j * 25)/10))
+            } else if (document.all) {
+            letra = eval( "document.all.capa" + j )
+            letra.style.pixelTop = (Y + Math.cos((20 * Math.sin(incremento/20)) + j * 70) * y * (Math.sin(10+incremento/10) + 0.2) * Math.cos((incremento + j * 25)/10))
+            letra.style.pixelLeft = (X + Math.sin((20*Math.sin(incremento/20)) + j * 70) * x * (Math.sin(10+incremento/10) + 0.2) * Math.cos((incremento + j * 25)/10))
+            } else if (document.getElementById) {
+            letra = document.getElementById( "capa" + j )
+            letra.style.top = (Y + Math.cos((20 * Math.sin(incremento/20)) + j * 70) * y * (Math.sin(10+incremento/10) + 0.2) * Math.cos((incremento + j * 25)/10)) + 'px'
+            letra.style.left = (X + Math.sin((20*Math.sin(incremento/20)) + j * 70) * x * (Math.sin(10+incremento/10) + 0.2) * Math.cos((incremento + j * 25)/10)) + 'px'
+            } else //no soportado, finaliza ejecucion
+            return
+            
+            }
+            
+            incremento += .2
+            setTimeout("mueveLetras()", velocidad)
+            }
+            
+            function escribeTexto() {
+            var texto = ''
+            for ( j = 0 ; j < numeroLetras ; j++ ) {
+            texto += '<div id="capa' + j + '" style="position:fixed; visibility:show; left:250px; top:150px; z-index:2; font-size: 2em; color: rgb(' + j*10 + ',' + (255-j*10) + ',150)">' + mensaje.charAt(j) + '</div>'
+            }
+            document.write( texto )
+            }
+            
+            
+            window.onload = mueveLetras;
+            if (document.captureEvents) { //N4 requiere invocar la funcion captureEvents
+            document.captureEvents(Event.LOAD)
+            }
+            
+            //]]>
+
+// <![CDATA[
+var colour="#00FF55";
+var sparkles=40;
+
+/****************************
+* Tinkerbell Magic Sparkle *
+* (c) 2005 mf2fm web-design *
+* http://www.mf2fm.com/rv *
+* DON'T EDIT BELOW THIS BOX *
+****************************/
+
+var x=ox=400;
+var y=oy=300;
+var swide=800;
+var shigh=600;
+var sleft=sdown=0;
+var tiny=new Array();
+var star=new Array();
+var starv=new Array();
+var starx=new Array();
+var stary=new Array();
+var tinyx=new Array();
+var tinyy=new Array();
+var tinyv=new Array();
+window.onload=function() { if (document.getElementById) {
+var i, rats, rlef, rdow;
+for (var i=0; i<sparkles; i++) {
+var rats=createDiv(3, 3);
+rats.style.visibility="hidden";
+document.body.appendChild(tiny[i]=rats);
+starv[i]=0;
+tinyv[i]=0;
+var rats=createDiv(5, 5);
+rats.style.backgroundColor="transparent";
+rats.style.visibility="hidden";
+var rlef=createDiv(1, 5);
+var rdow=createDiv(5, 1);
+rats.appendChild(rlef);
+rats.appendChild(rdow);
+rlef.style.top="2px";
+rlef.style.left="0px";
+rdow.style.top="0px";
+rdow.style.left="2px";
+document.body.appendChild(star[i]=rats);
+}
+set_width();
+sparkle();
+}}
+function sparkle() {
+var c;
+if (x!=ox || y!=oy) {
+ox=x;
+oy=y;
+for (c=0; c<sparkles; c++) if (!starv[c]) {
+star[c].style.left=(starx[c]=x)+"px";
+star[c].style.top=(stary[c]=y)+"px";
+star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+star[c].style.visibility="visible";
+starv[c]=50;
+break;
+}
+}
+for (c=0; c<sparkles; c++) {
+if (starv[c]) update_star(c);
+if (tinyv[c]) update_tiny(c);
+}
+setTimeout("sparkle()", 40);
+}
+function update_star(i) {
+if (--starv[i]==25) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+if (starv[i]) {
+stary[i]+=1+Math.random()*3;
+if (stary[i]<shigh+sdown) {
+star[i].style.top=stary[i]+"px";
+starx[i]+=(i%5-2)/5;
+star[i].style.left=starx[i]+"px";
+}
+else {
+star[i].style.visibility="hidden";
+starv[i]=0;
+return;
+}
+}
+else {
+tinyv[i]=50;
+tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+tiny[i].style.width="2px";
+tiny[i].style.height="2px";
+star[i].style.visibility="hidden";
+tiny[i].style.visibility="visible"
+}
+}
+function update_tiny(i) {
+if (--tinyv[i]==25) {
+tiny[i].style.width="1px";
+tiny[i].style.height="1px";
+}
+if (tinyv[i]) {
+tinyy[i]+=1+Math.random()*3;
+if (tinyy[i]<shigh+sdown) {
+tiny[i].style.top=tinyy[i]+"px";
+tinyx[i]+=(i%5-2)/5;
+tiny[i].style.left=tinyx[i]+"px";
+}
+else {
+tiny[i].style.visibility="hidden";
+tinyv[i]=0;
+return;
+}
+}
+else tiny[i].style.visibility="hidden";
+}
+document.onmousemove=mouse;
+function mouse(e) {
+set_scroll();
+y=(e)?e.pageY:event.y+sdown;
+x=(e)?e.pageX:event.x+sleft;
+}
+function set_scroll() {
+if (typeof(self.pageYOffset)=="number") {
+sdown=self.pageYOffset;
+sleft=self.pageXOffset;
+}
+else if (document.body.scrollTop || document.body.scrollLeft) {
+sdown=document.body.scrollTop;
+sleft=document.body.scrollLeft;
+}
+else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+sleft=document.documentElement.scrollLeft;
+sdown=document.documentElement.scrollTop;
+}
+else {
+sdown=0;
+sleft=0;
+}
+}
+window.onresize=set_width;
+function set_width() {
+if (typeof(self.innerWidth)=="number") {
+swide=self.innerWidth;
+shigh=self.innerHeight;
+}
+else if (document.documentElement && document.documentElement.clientWidth) {
+swide=document.documentElement.clientWidth;
+shigh=document.documentElement.clientHeight;
+}
+else if (document.body.clientWidth) {
+swide=document.body.clientWidth;
+shigh=document.body.clientHeight;
+}
+}
+function createDiv(height, width) {
+var div=document.createElement("div");
+div.style.position="absolute";
+div.style.height=height+"px";
+div.style.width=width+"px";
+div.style.overflow="hidden";
+div.style.backgroundColor=colour;
+return (div);
+}
+// ]]>
+</script>
+        
+<head>
+    <title>archi mega loleada supremaskibidi sigma</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<script language="javascript" type="text/javascript">
+    escribeTexto()
+    </script>
+<body>
+        </text>
+      </svg>
+
+    <audio autoplay loop>
+        <source src="ELLAMELLAMA.mp3" type="audio/mpeg">
+    </audio>
+
+    <h1>EL TITULOL DE... la pagina toda loleada xd</h1>
+    <h2>when haces subtitulos en tus paginas :v</h2>
+    <h3>and subtitulas los subtitulos xDXdXDDXdxDXdxDDD</h3>
+    <h4>los titulos en plan:</h4>
+    <h5>ya no aguanto jefe :,v</h5>
+    <h6>nou mor jedings ya esta loco</h6>
+    <p>ola ya esta termino el ciclo sin fin de titulos subtitulos, pagina nashe, top 5 paginas que cambiaron el transcurso del mundo :v</p>
+     <hr>
+       <span style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"><h1><span style=color:blue>MOMO DE ARG, TANO IDOLO</h1> 
+    
+        <img src="https://us-tuna-sounds-images.voicemod.net/33bee7c3-12f4-4987-901c-bce78b8e1bd6-1702435843896.jpg" alt="">
+        <img src="https://media.tenor.com/BPSfyjEKq-0AAAAM/momo-bailando.gif">
+
+        <span style="color: #f5f100;text-shadow: 2px 0 0 #2cff02, -2px 0 0 #2cff02, 0 2px 0 #2cff02, 0 -2px 0 #2cff02, 1px 1px #2cff02, -1px -1px 0 #2cff02, 1px -1px 0 #2cff02, -1px 1px 0 #2cff02;">
+        <p>Geronimo Benavidez, conocido en redes sociales como MoMo, es un streamer y artista polifacetico el cual le ha cambiado la vida
+        <p>a todos sus seguidores con sus actos caritativos, este es el aclamado autor de la cancion "Me llama", una de las grandes obras</p>
+        <p>de la musica en general, y hoy traemos su letra.</p></span>
+
+             <p><span style="color: #be0000;text-shadow: 2px 0 0 #3d0046, -2px 0 0 #3d0046, 0 2px 0 #3d0046, 0 -2px 0 #3d0046, 1px 1px #3d0046, -1px -1px 0 #3d0046, 1px -1px 0 #3d0046, -1px 1px 0 #3d0046;" <br>
+                te tengo al lado y me siento solo<br>
+                El miedo me come y no entiendo cómo<br> 
+                Razones no faltan para querer irme, pero si me voy quizás falte todo<br>
+                Ella me llama, y me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                Porque tú eres mi pasado y lo mejor que me había pasado, también<br>
+                Y me llama, me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                El no poder entendernos es lo que no logro entender<br>
+                ¿Cómo voy a darte mi mundo entero?<br>
+                Si no estoy entero para darte el mundo<br>
+                ¿Cómo pedirle milagros al tiempo?<br>
+                Si tú me cambiabas en un segundo<br>
+                Te digo para, y me pones peros<br>
+                Separados, nunca y tampoco juntos<br>
+                Entonces, tú dime enserio, ¿Qué hacemos?<br>
+                Te lo pregunto<br>
+                Porque ella me llama, y me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                Porque tú eres mi pasado y lo mejor que me había pasado, también<br>
+                Y me llama, me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                El no poder entendernos es lo que no logro entender<br>
+                Vivo refugiado en mi pasado<br>
+                A veces la luz no hace verlo claro<br>
+                Y si yo no te hubiera conocido, te prometo que te hubiera inventado<br>
+                Todo por delante, contigo al lado<br>
+                Viviendo un sueño, pero drogado<br>
+                Expertos en transformar todo lo fácil en complicado<br>
+                Porque tu te quedarás, solo por el miedo a nunca verme más<br>
+                Me dice que hacemos y olvidar, te digo olvidar<br>
+                Ojalá que el tiempo nos sepa juntar<br>
+                Y los meses pasarán, pero no por dentro y tú me cambiarás<br>
+                Por otra persona y ya no será igual<br>
+                Si todo lo echamos a perder, ¿Qué voy a encontrar?<br>
+                Porque ella me llama, y me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                Porque tú eres mi pasado y lo mejor que me había pasado, también<br>
+                Y me llama, me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                El no poder entendernos es lo que no logro entender<br>
+                ¿Cómo voy a darte mi mundo entero?<br>
+                Si no estoy entero para darte el mundo<br>
+                ¿Cómo pedirle milagros al tiempo?<br>
+                Si tú me cambiabas en un segundo<br>
+                Las nubes se posan sobre mi cielo<br>
+                Volando en tu llanto, y en lo más profundo<br>
+                Entonces, tú dime enserio, ¿Qué hacemos?<br>
+                No encuentro el rumbo (No encuentro el rumbo)<br>
+                Y me llama, me llama, y no sé qué hacer<br>
+                Llama, y me llama, y si volveré<br>
+                El no poder entendernos es lo que no logro entender<br>
+                Porque ella me llama, me llama, y no sé qué hacer<br>
+                Llama, me llama y no volveré<br></span></p>
+                </text>
+        </p>
+</body>
+
+</html>
